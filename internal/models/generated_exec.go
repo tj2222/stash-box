@@ -5866,6 +5866,7 @@ type QueryScenesResultType {
 enum SceneSortEnum {
   TITLE
   DATE
+  DURATION
   TRENDING
   POPULARITY
   CREATED_AT

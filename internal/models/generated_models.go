@@ -2218,6 +2218,7 @@ type SceneSortEnum string
 const (
 	SceneSortEnumTitle      SceneSortEnum = "TITLE"
 	SceneSortEnumDate       SceneSortEnum = "DATE"
+	SceneSortEnumDuration   SceneSortEnum = "DURATION"
 	SceneSortEnumTrending   SceneSortEnum = "TRENDING"
 	SceneSortEnumPopularity SceneSortEnum = "POPULARITY"
 	SceneSortEnumCreatedAt  SceneSortEnum = "CREATED_AT"
@@ -2227,6 +2228,7 @@ const (
 var AllSceneSortEnum = []SceneSortEnum{
 	SceneSortEnumTitle,
 	SceneSortEnumDate,
+	SceneSortEnumDuration,
 	SceneSortEnumTrending,
 	SceneSortEnumPopularity,
 	SceneSortEnumCreatedAt,
@@ -2235,7 +2237,7 @@ var AllSceneSortEnum = []SceneSortEnum{
 
 func (e SceneSortEnum) IsValid() bool {
 	switch e {
-	case SceneSortEnumTitle, SceneSortEnumDate, SceneSortEnumTrending, SceneSortEnumPopularity, SceneSortEnumCreatedAt, SceneSortEnumUpdatedAt:
+	case SceneSortEnumTitle, SceneSortEnumDate, SceneSortEnumDuration, SceneSortEnumTrending, SceneSortEnumPopularity, SceneSortEnumCreatedAt, SceneSortEnumUpdatedAt:
 		return true
 	}
 	return false
