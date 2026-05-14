@@ -1478,3 +1478,70 @@ func TestSubmitFingerprintsBatchFiltersMD5(t *testing.T) {
 	pt := createSceneTestRunner(t)
 	pt.testSubmitFingerprintsBatchFiltersMD5()
 }
+
+func (s *sceneTestRunner) testQueryScenesByDurationSort() {
+	prefix := "testQueryScenesByDurationSort_"
+	scene1Title := prefix + "scene1Title"
+	scene2Title := prefix + "scene2Title"
+	scene3Title := prefix + "scene3Title"
+
+	d1 := 100
+	d2 := 200
+	d3 := 300
+
+	input := models.SceneCreateInput{
+		Title:    &scene1Title,
+		Date:     "2020-03-02",
+		Duration: &d2,
+	}
+
+	scene1, err := s.createTestScene(&input) // duration 200
+	assert.NoError(s.t, err)
+
+	input.Title = &scene2Title
+	input.Duration = &d3
+	scene2, err := s.createTestScene(&input) // duration 300
+	assert.NoError(s.t, err)
+
+	input.Title = &scene3Title
+	input.Duration = &d1
+	scene3, err := s.createTestScene(&input) // duration 100
+	assert.NoError(s.t, err)
+
+	scene1ID := scene1.UUID()
+	scene2ID := scene2.UUID()
+	scene3ID := scene3.UUID()
+
+	titleSearch := prefix
+	filter := models.SceneQueryInput{
+		Title:     &titleSearch,
+		Page:      1,
+		PerPage:   10,
+		Sort:      models.SceneSortEnumDuration,
+		Direction: models.SortDirectionEnumAsc,
+	}
+
+	results, err := s.client.queryScenes(filter)
+	assert.NoError(s.t, err)
+
+	if assert.Len(s.t, results.Scenes, 3) {
+		assert.Equal(s.t, scene3ID.String(), results.Scenes[0].ID) // 100
+		assert.Equal(s.t, scene1ID.String(), results.Scenes[1].ID) // 200
+		assert.Equal(s.t, scene2ID.String(), results.Scenes[2].ID) // 300
+	}
+
+	filter.Direction = models.SortDirectionEnumDesc
+	results, err = s.client.queryScenes(filter)
+	assert.NoError(s.t, err)
+
+	if assert.Len(s.t, results.Scenes, 3) {
+		assert.Equal(s.t, scene2ID.String(), results.Scenes[0].ID) // 300
+		assert.Equal(s.t, scene1ID.String(), results.Scenes[1].ID) // 200
+		assert.Equal(s.t, scene3ID.String(), results.Scenes[2].ID) // 100
+	}
+}
+
+func TestQueryScenesByDurationSort(t *testing.T) {
+	pt := createSceneTestRunner(t)
+	pt.testQueryScenesByDurationSort()
+}
