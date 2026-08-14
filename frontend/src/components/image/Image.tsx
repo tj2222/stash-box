@@ -70,7 +70,6 @@ const ImageComponent: FC<ImageProps> = ({
 
 interface ContainerProps {
   images: Image[] | Image | undefined;
-  orientation?: "landscape" | "portrait";
   emptyMessage?: string;
   size?: ImageSize;
   alt?: string;

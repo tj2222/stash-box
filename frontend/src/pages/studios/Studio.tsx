@@ -97,7 +97,7 @@ const StudioComponent: FC<Props> = ({ studio }) => {
         </div>
         {studioImage && (
           <div className="studio-photo">
-            <img src={studio.images[0]?.url} alt="Studio logo" />
+            <img src={studioImage} alt="Studio logo" />
           </div>
         )}
         <div>
